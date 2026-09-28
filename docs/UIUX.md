@@ -1,60 +1,60 @@
 # UI/UX — Website Portofolio Fotografer
 
-**Versi:** 2.0
+**Versi:** 2.1
 **Tanggal:** 2026-09-28
 **Acuan:** PRD v2.0, UIUX v1.0
 **Skill:** Taste Skill (`design-taste-frontend`) + UI UX Pro Max
+
+> **Perubahan v2.1:** Tema diganti dari Editorial Bold ke **Photography-First** atas permintaan pemilik ("biar tidak terlalu AI"). Keputusan diambil lewat proses Taste Skill §0: 9 mockup arah lain ditolak semua; inference final — yang paling anti-generik adalah interface yang menghilang dan membiarkan foto asli bicara.
 
 ---
 
 ## 0. Design Read (Taste Skill §0)
 
-**"Reading this as: photographer portfolio for prospective clients, with an editorial-bold magazine language, leaning toward Tailwind v4 + Motion + asymmetric print-inspired layouts."**
+**"Reading this as: photographer portfolio for Indonesian wedding/portrait clients, with a photography-first gallery language — the interface disappears and the work carries the design — leaning toward Tailwind v4 + Motion + full-bleed imagery."**
 
 ### Dials
 
 | Dial | Nilai | Alasan |
 |---|---|---|
-| DESIGN_VARIANCE | **8** | Portfolio kreatif: asimetris, layout majalah |
-| MOTION_INTENSITY | **7** | Sinematik tapi bermakna: reveal, parallax, transisi halaman |
-| VISUAL_DENSITY | **3** | Galeri seni: lega, foto sebagai statement |
+| DESIGN_VARIANCE | **6** | Tertahan: foto yang bervariasi, chrome-nya tenang |
+| MOTION_INTENSITY | **7** | Sinematik: reveal berurutan, parallax, transisi halaman |
+| VISUAL_DENSITY | **2** | Airy seperti galeri seni |
 
 ### Anti-Default Discipline
 
-Dilarang: gradien ungu AI, hero centered + dark mesh, 3 kartu fitur sejajar, glassmorphism di semua elemen, Inter sebagai default, emoji di UI.
+Dilarang: gradien ungu AI, hero centered + dark mesh, 3 kartu fitur sejajar, glassmorphism di semua elemen, Inter sebagai default, emoji di UI. Tambahan v2.1: **dilarang chrome yang lebih menonjol dari fotonya** — dekorasi UI tidak boleh mengalahkan karya.
 
 ## 1. Prinsip Desain
 
-1. **Foto adalah desainnya** — halaman dibangun mengelilingi karya, bukan sebaliknya.
-2. **Berani & ritmis** — tipografi raksasa, layout asimetris, jeda yang dramatis.
+1. **Foto adalah desainnya** — halaman dibangun mengelilingi karya; interface nyaris tak terlihat.
+2. **Tenang & percaya diri** — tipografi serif elegan, ruang lega, tanpa dekorasi berlebihan.
 3. **Satu aksi per layar** — tiap halaman punya satu tujuan jelas.
 4. **Gerak yang bermakna** — setiap animasi menjawab "apa yang dikomunikasikan" (hierarki / cerita / feedback).
-5. **Mobile-first** — asimetris desktop runtuh menjadi satu kolom rapi di HP.
+5. **Mobile-first** — full-bleed di HP; foto memenuhi layar tanpa ruang kosong.
 
 ## 2. Design Tokens
 
 | Token | Terang | Gelap |
 |---|---|---|
-| `--paper` (bg) | `#f4f1ea` hangat | `#11110f` pekat |
-| `--ink` (teks) | `#11110f` | `#f4f1ea` |
-| `--muted` | `#625f58` | `#aaa69e` |
-| `--line` (garis) | `#1c1c18` | `#ded8ce` |
-| `--accent` (SATU aksen) | `#ec422f` merah editorial | `#ff5a42` |
-| `--acid` (aksen kedua, hemat) | `#d9f36a` | `#d9f36a` |
-| `--panel` | `#e9e5dc` | `#1c1b18` |
+| `--paper` (bg) | `#faf8f4` putih hangat | `#14120f` hitam hangat |
+| `--ink` (teks) | `#1a1815` | `#f2ede4` |
+| `--muted` | `#6f675c` | `#a89e90` |
+| `--line` (garis) | `#e3ddd2` | `#2b2721` |
+| `--accent` (SATU aksen) | `#b4552d` terracotta | `#d97b4f` |
 
-**Aturan kunci (Color Consistency Lock):** satu aksen per halaman (`--accent`). `--acid` hanya untuk badge kecil ("Available for projects"). Tidak ada aksen ketiga.
+**Aturan kunci (Color Consistency Lock):** satu aksen untuk seluruh proyek (`--accent` terracotta). Tidak ada aksen kedua.
 
 ### Tipografi
 
-- **Display:** serif editorial tebal (Bodoni/Didot via `next/font`) — **pengecualian serif yang dibenarkan**: brief-nya genuinely editorial/majalah.
-- **Isi:** sans bersih via `next/font` (`display: swap`).
-- **Aturan:** headline maks 2 baris; italic + descender (`y g j p q`) wajib `leading-[1.1]` + `pb-1` agar tidak kepotong.
+- **Display:** serif elegan (Bodoni Moda via `next/font`) — nama & headline besar.
+- **Isi:** sans bersih (Manrope via `next/font`, `display: swap`).
+- **Aturan:** headline hero maks 3 baris; descender (`y g j p q`) wajib `leading` longgar + `pb-1` agar tidak kepotong.
 
 ### Bentuk & Bayangan
 
-- **Radius:** tajam — `0–4px` di seluruh proyek (Shape Consistency Lock).
-- **Bayangan:** tint sesuai background; tidak ada drop-shadow hitam murni di mode terang.
+- **Radius:** minimal — foto full-bleed tanpa radius; tombol 0–2px (Shape Consistency Lock).
+- **Bayangan:** hampir tidak dipakai; kedalaman datang dari foto itu sendiri.
 
 ## 3. Struktur Navigasi
 
