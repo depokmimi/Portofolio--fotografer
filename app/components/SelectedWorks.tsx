@@ -4,19 +4,19 @@ import Reveal from "./Reveal";
 
 const works = [
   {
-    seed: "mrr-wedding-1",
+    src: "/images/wedding.jpg",
     title: "Senja di Hari Bahagia",
     category: "Wedding",
     ratio: "aspect-[4/3]",
   },
   {
-    seed: "mrr-prewed-1",
+    src: "/images/prewed.jpg",
     title: "Dua Hati, Satu Cerita",
     category: "Prewedding",
     ratio: "aspect-[3/4]",
   },
   {
-    seed: "mrr-wisuda-1",
+    src: "/images/wisuda.jpg",
     title: "Toga & Tawa",
     category: "Wisuda",
     ratio: "aspect-[16/10]",
@@ -41,11 +41,11 @@ export default function SelectedWorks() {
       </Reveal>
       <div className="grid gap-6 md:grid-cols-3 md:gap-8">
         {works.map((w, i) => (
-          <Reveal key={w.seed} delay={i * 0.1}>
+          <Reveal key={w.src} delay={i * 0.1}>
             <Link href="/galeri" className="group block">
               <div className={`relative overflow-hidden ${w.ratio} bg-line`}>
                 <Image
-                  src={`https://picsum.photos/seed/${w.seed}/900/900`}
+                  src={w.src}
                   alt={w.title}
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"

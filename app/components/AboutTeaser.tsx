@@ -9,7 +9,7 @@ export default function AboutTeaser() {
         <Reveal>
           <div className="relative aspect-[4/5] overflow-hidden bg-line">
             <Image
-              src="https://picsum.photos/seed/mrr-portrait/800/1000"
+              src="/images/portrait.jpg"
               alt="Potret Muhamad Ramdhani Rachmansyah"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"

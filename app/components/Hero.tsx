@@ -18,7 +18,7 @@ export default function Hero() {
     <section ref={ref} className="relative min-h-[100dvh] overflow-hidden bg-ink">
       <motion.div style={reduce ? undefined : { y }} className="absolute inset-0">
         <motion.img
-          src="https://picsum.photos/seed/mrr-hero/1800/1200"
+          src="/images/hero.jpg"
           alt="Pasangan pengantin dalam balutan cahaya senja"
           className="h-full w-full object-cover"
           initial={reduce ? undefined : { scale: 1.12 }}
