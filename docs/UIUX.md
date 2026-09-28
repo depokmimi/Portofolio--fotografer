@@ -1,25 +1,25 @@
 # UI/UX — Website Portofolio Fotografer
 
-**Versi:** 2.1
+**Versi:** 2.2
 **Tanggal:** 2026-09-28
 **Acuan:** PRD v2.0, UIUX v1.0
 **Skill:** Taste Skill (`design-taste-frontend`) + UI UX Pro Max
 
-> **Perubahan v2.1:** Tema diganti dari Editorial Bold ke **Photography-First** atas permintaan pemilik ("biar tidak terlalu AI"). Keputusan diambil lewat proses Taste Skill §0: 9 mockup arah lain ditolak semua; inference final — yang paling anti-generik adalah interface yang menghilang dan membiarkan foto asli bicara.
+> **Perubahan v2.2:** Tema diganti dari Photography-First ke **Dark Monokrom Luxury** atas persetujuan eksplisit pemilik ("iya yang ini", 2026-09-28) mengacu pada referensi Instagram dark/moody: background hitam pekat, foto hitam-putih dramatis sinematik, headline sans-serif raksasa uppercase, label kecil uppercase letter-spacing lebar, kategori bernomor, kutipan serif italic, tanda tangan script di footer. Halaman tetap terpisah (Beranda, Galeri, Video, Tentang, Kontak) — bukan one-page.
 
 ---
 
 ## 0. Design Read (Taste Skill §0)
 
-**"Reading this as: photographer portfolio for Indonesian wedding/portrait clients, with a photography-first gallery language — the interface disappears and the work carries the design — leaning toward Tailwind v4 + Motion + full-bleed imagery."**
+**"Reading this as: luxury monochrome photographer portfolio — black canvas, black-and-white cinematic imagery, giant condensed uppercase headlines, numbered categories, whisper-quiet labels — leaning toward Tailwind v4 + Motion + grayscale photography."**
 
 ### Dials
 
 | Dial | Nilai | Alasan |
 |---|---|---|
-| DESIGN_VARIANCE | **6** | Tertahan: foto yang bervariasi, chrome-nya tenang |
-| MOTION_INTENSITY | **7** | Sinematik: reveal berurutan, parallax, transisi halaman |
-| VISUAL_DENSITY | **2** | Airy seperti galeri seni |
+| DESIGN_VARIANCE | **7** | Dramatis: kontras hitam-putih ekstrem, headline raksasa |
+| MOTION_INTENSITY | **7** | Sinematik: reveal berurutan, parallax, hover bergeser |
+| VISUAL_DENSITY | **4** | Berani tapi rapi: tiap section punya satu momen besar |
 
 ### Anti-Default Discipline
 
@@ -27,28 +27,32 @@ Dilarang: gradien ungu AI, hero centered + dark mesh, 3 kartu fitur sejajar, gla
 
 ## 1. Prinsip Desain
 
-1. **Foto adalah desainnya** — halaman dibangun mengelilingi karya; interface nyaris tak terlihat.
-2. **Tenang & percaya diri** — tipografi serif elegan, ruang lega, tanpa dekorasi berlebihan.
-3. **Satu aksi per layar** — tiap halaman punya satu tujuan jelas.
-4. **Gerak yang bermakna** — setiap animasi menjawab "apa yang dikomunikasikan" (hierarki / cerita / feedback).
-5. **Mobile-first** — full-bleed di HP; foto memenuhi layar tanpa ruang kosong.
+1. **Hitam adalah kanvasnya** — background `#0a0a0a` pekat; karya tampil sebagai foto hitam-putih dramatis (grayscale).
+2. **Tipografi sebagai kemewahan** — headline Anton raksasa uppercase; label kecil uppercase dengan letter-spacing lebar sebagai bisikan.
+3. **Bernomor seperti editorial mode** — kategori dan kontak memakai penomoran `01 02 03`.
+4. **Gerak yang bermakna** — reveal berurutan, parallax foto, hover menggeser; kartu login 3D mengambang.
+5. **Mobile-first** — foto memenuhi layar HP tanpa ruang kosong; layout split jadi susun vertikal di HP.
 
 ## 2. Design Tokens
 
-| Token | Terang | Gelap |
-|---|---|---|
-| `--paper` (bg) | `#faf8f4` putih hangat | `#14120f` hitam hangat |
-| `--ink` (teks) | `#1a1815` | `#f2ede4` |
-| `--muted` | `#6f675c` | `#a89e90` |
-| `--line` (garis) | `#e3ddd2` | `#2b2721` |
-| `--accent` (SATU aksen) | `#b4552d` terracotta | `#d97b4f` |
+| Token | Nilai (tunggal — selalu dark) |
+|---|---|
+| `--paper` (bg) | `#0a0a0a` hitam pekat |
+| `--ink` (teks) | `#f4f4f3` putih gading |
+| `--muted` | `#a1a1a1` abu-abu |
+| `--line` (garis) | `#262626` |
+| `--accent` | `#f4f4f3` (monokrom — aksen = putih) |
 
-**Aturan kunci (Color Consistency Lock):** satu aksen untuk seluruh proyek (`--accent` terracotta). Tidak ada aksen kedua.
+**Catatan:** tombol login `/masuk` adalah pengecualian yang disetujui pemilik — pil kuning elektrik `#ffd60a` ala referensi reel, dipakai hanya di halaman login.
+
+**Foto:** selalu `grayscale` + kontras dramatis; hover: zoom halus 1.08x.
 
 ### Tipografi
 
-- **Display:** serif elegan (Bodoni Moda via `next/font`) — nama & headline besar.
-- **Isi:** sans bersih (Manrope via `next/font`, `display: swap`).
+- **Display:** Anton (condensed bold, uppercase) via `next/font` — headline raksasa, nama, kategori bernomor.
+- **Kutipan:** Bodoni Moda italic via `next/font` — kutipan filosofi besar di tengah.
+- **Tanda tangan:** Pinyon Script via `next/font` — tanda tangan di footer.
+- **Isi & label:** Manrope via `next/font`, `display: swap` — label kecil uppercase `tracking-[0.3em]`.
 - **Aturan:** headline hero maks 3 baris; descender (`y g j p q`) wajib `leading` longgar + `pb-1` agar tidak kepotong.
 
 ### Bentuk & Bayangan
