@@ -7,7 +7,7 @@ import Footer from "../components/Footer";
 import PageHeader from "../components/PageHeader";
 import Lightbox, { type LightboxPhoto } from "../components/Lightbox";
 import Reveal from "../components/Reveal";
-import { getPhotos, workPhotoUrl, type WorkPhoto } from "@/lib/works";
+import { getPhotos, workPhotoUrl, LOCAL_PHOTOS, type WorkPhoto } from "@/lib/works";
 
 interface Photo extends LightboxPhoto {
   category: string;
@@ -20,7 +20,9 @@ function toPhoto(w: WorkPhoto): Photo {
 }
 
 export default function GaleriClient() {
-  const [photos, setPhotos] = useState<Photo[]>([]);
+  const [photos, setPhotos] = useState<Photo[]>(() =>
+    LOCAL_PHOTOS.map(toPhoto)
+  );
   const [filter, setFilter] = useState("Semua");
   const [lightbox, setLightbox] = useState<number | null>(null);
 
