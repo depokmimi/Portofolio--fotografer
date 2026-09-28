@@ -46,7 +46,7 @@ export default function TentangPage() {
                 bukan sekadar indah — ia punya sikap.”
               </p>
             </Reveal>
-            <Reveal delay={100}>
+            <Reveal delay={0.1}>
               <div className="mt-8 space-y-5 text-[15px] leading-relaxed text-muted">
                 <p>
                   Perjalanan saya dimulai dari rasa penasaran sederhana:
@@ -76,7 +76,7 @@ export default function TentangPage() {
           <ul className="border-t border-line">
             {SERVICES.map((s, i) => (
               <li key={s.no} className={i > 0 ? "border-t border-line" : ""}>
-                <Reveal delay={(i % 6) * 50}>
+                <Reveal delay={(i % 6) * 0.05}>
                   <div className="flex items-baseline gap-5 py-5 md:gap-8">
                     <span className="w-10 shrink-0 text-sm tracking-[0.2em] text-muted">
                       {s.no}

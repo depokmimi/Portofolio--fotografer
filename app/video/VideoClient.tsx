@@ -104,7 +104,7 @@ export default function VideoClient() {
           desc="Cerita yang bergerak — film wedding sinematik, aftermovie event, dan potret dalam gerak. Klik untuk menonton."
         />
 
-        <Reveal delay={140} className="mt-10">
+        <Reveal delay={0.14} className="mt-10">
           <button
             onClick={() => setActive(0)}
             className="group relative block w-full cursor-pointer overflow-hidden text-left"
@@ -139,7 +139,7 @@ export default function VideoClient() {
 
         <div className="mt-12 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2">
           {rest.map((v, i) => (
-            <Reveal key={v.id} delay={(i % 2) * 80}>
+            <Reveal key={v.id} delay={(i % 2) * 0.08}>
               <figure>
               <button
                 onClick={() => setActive(i + 1)}
@@ -202,7 +202,7 @@ export default function VideoClient() {
                 controls
                 autoPlay
                 playsInline
-                className="aspect-video w-full bg-black"
+                className="aspect-video w-full bg-black grayscale"
               />
             </div>
           </div>

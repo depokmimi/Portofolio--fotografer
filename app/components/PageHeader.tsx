@@ -20,7 +20,7 @@ export default function PageHeader({ eyebrow, title, desc }: PageHeaderProps) {
         </h1>
       </Reveal>
       {desc && (
-        <Reveal delay={100}>
+        <Reveal delay={0.1}>
           <p className="mt-6 max-w-[520px] text-[15px] leading-relaxed text-muted">
             {desc}
           </p>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Anton, Bodoni_Moda, Manrope, Pinyon_Script } from "next/font/google";
 import "./globals.css";
+import Chatbox from "./components/Chatbox";
 
 const anton = Anton({
   variable: "--font-anton",
@@ -28,10 +29,32 @@ const manrope = Manrope({
   display: "swap",
 });
 
+const siteUrl = "https://portofolio-fotografer.vercel.app";
+
 export const metadata: Metadata = {
-  title: "Muhamad Ramdhani Rachmansyah — Fotografer",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Muhamad Ramdhani Rachmansyah — Fotografer",
+    template: "%s — MRR Fotografer",
+  },
   description:
     "Portofolio fotografi Muhamad Ramdhani Rachmansyah: wedding, prewedding, wisuda, dan portrait. Mengabadikan momen berharga Anda.",
+  openGraph: {
+    type: "website",
+    locale: "id_ID",
+    url: siteUrl,
+    siteName: "MRR Fotografer",
+    title: "Muhamad Ramdhani Rachmansyah — Fotografer",
+    description:
+      "Portofolio fotografi: wedding, prewedding, wisuda, dan portrait dalam bingkai hitam-putih sinematik.",
+    images: [{ url: "/images/hero.jpg", width: 1200, height: 800, alt: "Karya fotografi MRR" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Muhamad Ramdhani Rachmansyah — Fotografer",
+    description: "Portofolio fotografi wedding, prewedding, wisuda, dan portrait.",
+    images: ["/images/hero.jpg"],
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -40,7 +63,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="id"
       className={`${anton.variable} ${bodoni.variable} ${pinyon.variable} ${manrope.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-paper text-ink">{children}</body>
+      <body className="min-h-full bg-paper text-ink">
+        {children}
+        <Chatbox />
+      </body>
     </html>
   );
 }

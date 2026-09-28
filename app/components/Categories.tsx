@@ -22,7 +22,7 @@ export default function Categories() {
       <ul>
         {categories.map((c, i) => (
           <li key={c.no} className={i > 0 ? "border-t border-line" : ""}>
-            <Reveal delay={i * 60}>
+            <Reveal delay={i * 0.06}>
               <Link
                 href="/galeri"
                 className="group flex items-center gap-5 py-5 md:gap-10 md:py-7"

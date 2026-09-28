@@ -60,7 +60,7 @@ export default function KontakPage() {
         <ul className="mt-12 border-t border-line">
           {CONTACTS.map((c, i) => (
             <li key={c.no} className={i > 0 ? "border-t border-line" : ""}>
-              <Reveal delay={i * 60}>
+              <Reveal delay={i * 0.06}>
                 <a
                   href={c.href}
                   target={c.href.startsWith("http") ? "_blank" : undefined}

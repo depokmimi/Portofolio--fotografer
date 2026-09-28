@@ -33,7 +33,7 @@ export default function SelectedWorks() {
       </Reveal>
       <div className="grid grid-cols-2 gap-3 md:gap-5 lg:grid-cols-4">
         {works.map((w, i) => (
-          <Reveal key={w.src} delay={(i % 4) * 70}>
+          <Reveal key={w.src} delay={(i % 4) * 0.07}>
             <Link href="/galeri" className="group relative block overflow-hidden">
               <img
                 src={w.src}

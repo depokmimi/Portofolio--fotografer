@@ -69,7 +69,7 @@ export default function GaleriClient() {
         ) : (
           <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
             {filtered.map((p, i) => (
-              <Reveal key={p.src} delay={(i % 6) * 60}>
+              <Reveal key={p.src} delay={(i % 6) * 0.06}>
                 <button
                   onClick={() => setLightbox(i)}
                   className="group relative block w-full cursor-pointer overflow-hidden text-left"
