@@ -59,11 +59,19 @@ TIDAK disentuh.**
 - Tidak ada secret/token yang masuk ke repo — sudah diperiksa sebelum push.
 
 ### 7. Dokumen & diagram
-- `docs/TASK-BREAKDOWN.md`: 18 dari 30 task ditandai selesai.
+- `docs/TASK-BREAKDOWN.md`: 19 dari 30 task ditandai selesai.
 - `docs/PRD.md` + `SRS.md`: klaim tema lama ("Editorial Bold") diganti
   "Dark Monokrom Luxury" sesuai keputusan Anda.
 - Diagram arsitektur: `docs/architecture.html` (dibuat dengan Archify, 771 KB).
 - PDF dokumen perencanaan dibangun ulang dari dokumen v2.0 yang sudah sinkron.
+
+### 8. Perbaikan temuan Archify: thumbnail Drive
+- **Masalah:** `lib/works.ts` merujuk ke `/api/drive/thumb/<id>` yang belum ada —
+  foto dari Drive akan 404.
+- **Perbaikan:** route `/api/drive/thumb/[id]` dibuat (publik, token OAuth tetap
+  di server, ada cache + validasi ID). Galeri kini membaca tabel `works`:
+  karya yang Anda unggah via `/admin` otomatis tampil; kalau tabel kosong,
+  foto bawaan tetap tampil (web tidak pernah blank).
 
 ---
 
