@@ -9,29 +9,33 @@
 ## Ringkasan
 
 Malam ini saya mengerjakan otomatis sesuai PRD. Semua yang reversibel sudah dikerjakan,
-diuji build lokal, dan dipush ke branch `v2`. **Branch `main`/production TIDAK disentuh.**
+build lokal lolos (exit code 0), dan dipush ke branch `v2`. **Branch `main`/production
+TIDAK disentuh.**
 
 ---
 
 ## Yang selesai malam ini
 
-### 1. Perbaikan bug animasi (temuan verifikasi kemarin sore)
+### 1. Perbaikan bug animasi ✅ TERVERIFIKASI LIVE
 - **Masalah:** di halaman Tentang & Kontak, baris layanan 02–06 dan baris kontak 02–04
   tidak terlihat (transparan) karena nilai `delay` animasi salah satuan —
   dikirim `50`, `100`, dst. (terbaca sebagai 50–100 DETIK oleh Motion).
 - **Perbaikan:** semua delay diubah ke detik (`0.05`, `0.1`, …), plus pengaman di
   komponen `Reveal` agar delay > 10 otomatis dianggap milidetik.
-- **Video:** player modal diberi efek `grayscale` agar footage berwarna tetap
-  konsisten dengan tema monokrom.
+- **Hasil cek browser (29 Sep ~00:00 WIB):** semua 6 layanan (01 WEDDING … 06 EVENT)
+  dan semua 4 baris kontak (WA, Telepon, Instagram @muramsyah, Email) **terlihat**.
+- **Video:** player modal diberi efek `grayscale` agar konsisten dengan tema monokrom;
+  area showreel terkonfirmasi menampilkan thumbnail + tombol play (tidak hitam).
 
-### 2. Halaman /admin — Area Pemilik (T-17)
+### 2. Halaman /admin — Area Pemilik (T-17) ✅ TERVERIFIKASI LIVE
 - Kartu **Status**: koneksi Supabase + status Google Drive + meter kuota Drive.
 - **Unggah karya**: pilih file foto/video → judul → kategori → progress bar.
-  File dikirim langsung ke Google Drive (aman untuk file besar, tidak lewat server).
+  File dikirim langsung ke Google Drive (aman untuk file besar).
 - **Daftar karya**: ubah urutan (↑↓), tandai featured (★ = tampil di Beranda),
   hapus karya (file di Drive ikut terhapus).
-- Semua API admin dikunci: **hanya email pemilik yang login** yang bisa akses.
-- Buka `/admin` → otomatis minta login dulu kalau belum masuk.
+- **Hasil cek browser:** buka `/admin` tanpa login → tampil layar "Welcome Back"
+  dengan tombol "Masuk dengan Google" — **dashboard tidak bisa diakses tanpa login.**
+- Setelah owner login di `/masuk`, ada tombol **"Buka halaman admin →"**.
 
 ### 3. Chatbox FAQ (T-16)
 - Tombol chat kuning melayang di kanan bawah semua halaman publik.
@@ -42,7 +46,7 @@ diuji build lokal, dan dipush ke branch `v2`. **Branch `main`/production TIDAK d
 - **Masalah:** di layar HP menu navigasi tidak ada — pengunjung HP tidak bisa
   pindah ke Galeri/Video/Tentang.
 - **Perbaikan:** tombol hamburger (☰) di HP membuka menu layar penuh dengan
-  daftar halaman bernomor 01–05.
+  daftar halaman bernomor 01–05. Build lolos; **mohon dicek di HP Anda.**
 
 ### 5. SEO + halaman error (T-20, T-24)
 - Judul & deskripsi tiap halaman, Open Graph (preview bagus saat link dibagikan),
@@ -55,27 +59,29 @@ diuji build lokal, dan dipush ke branch `v2`. **Branch `main`/production TIDAK d
 - Tidak ada secret/token yang masuk ke repo — sudah diperiksa sebelum push.
 
 ### 7. Dokumen & diagram
-- `docs/TASK-BREAKDOWN.md`: 16 dari 30 task ditandai selesai.
+- `docs/TASK-BREAKDOWN.md`: 18 dari 30 task ditandai selesai.
 - `docs/PRD.md` + `SRS.md`: klaim tema lama ("Editorial Bold") diganti
   "Dark Monokrom Luxury" sesuai keputusan Anda.
-- Diagram arsitektur: `docs/architecture.html` (dibuat dengan Archify).
-- Knowledge graph kode: `graphify-out/` (di luar repo).
+- Diagram arsitektur: `docs/architecture.html` (dibuat dengan Archify, 771 KB).
+- PDF dokumen perencanaan dibangun ulang dari dokumen v2.0 yang sudah sinkron.
 
 ---
 
-## Status verifikasi
+## Status verifikasi (cek browser 29 Sep ~00:00 WIB)
 
 | Halaman | Status |
 |---|---|
-| Beranda, Galeri, /masuk | ✅ Terverifikasi kemarin (desktop) |
-| /tentang (layanan 01–06) | ⏳ Menunggu hasil cek ulang browser |
-| /kontak (baris 01–04) | ⏳ Menunggu hasil cek ulang browser |
-| /video (showreel + grayscale) | ⏳ Menunggu hasil cek ulang browser |
-| /admin | ⏳ Menunggu hasil cek ulang browser |
+| Beranda | ✅ Sesuai tema dark monokrom |
+| Galeri + lightbox | ✅ Filter & lightbox (1/5, ‹ ›, tutup) berfungsi |
+| /tentang (layanan 01–06) | ✅ Semua terlihat — bug delay diperbaiki |
+| /kontak (baris 01–04) | ✅ Semua terlihat — bug delay diperbaiki |
+| /video (showreel + modal) | ✅ Showreel tampil, modal player berfungsi |
+| /masuk | ✅ Kartu kaca 3D + tombol kuning "Masuk dengan Google" |
+| /admin (owner gate) | ✅ Tanpa login: hanya layar login. Dashboard terkunci. |
+| Menu hamburger HP | ⚠️ Build lolos; perlu cek fisik di HP Anda |
 | Login Google end-to-end | ⏳ Perlu Anda coba sendiri (butuh akun Google Anda) |
-| HP 390px & tablet 820px | ⚠️ Cek kode: aman (menu mobile diperbaiki). **Cek fisik di HP Anda** — lihat bagian "Yang perlu Anda lakukan" |
 
-**URL preview (branch v2):** `https://portofolio-fotografer-git-v2-galeri-pribadi.vercel.app`
+**URL preview (branch v2):** `https://portofolio-fotografer-h2xznv69d-galeri-pribadi.vercel.app`
 _(catatan: setiap push baru membuat URL preview baru — pakai URL deployment terbaru
 dari dashboard Vercel jika link di atas sudah kedaluwarsa)_
 
@@ -92,7 +98,7 @@ dari dashboard Vercel jika link di atas sudah kedaluwarsa)_
      simpan sebagai `GOOGLE_REFRESH_TOKEN` di Vercel → Redeploy lagi.
    - Tambah `GOOGLE_DRIVE_FOLDER_ID=1LiB0ONoIieMkpJHiDzk_iXNh6wzCr1Q8` → Redeploy.
    - Setelah ini, upload dari `/admin` langsung jalan.
-2. **Coba di HP Anda**: buka URL preview → cek menu hamburger, galeri, video,
+2. **Coba di HP Anda**: buka URL preview → cek menu hamburger (☰), galeri, video,
    tentang, kontak, dan chatbox kuning. Kalau ada yang aneh, kirim screenshot.
 3. **Coba login Google** di `/masuk` lalu buka `/admin` — pastikan bisa masuk
    sebagai pemilik.
@@ -112,6 +118,5 @@ dari dashboard Vercel jika link di atas sudah kedaluwarsa)_
 ## Komitmen
 
 - Semua push malam ini ke branch `v2` saja — website live Anda tidak berubah.
-- Setiap klaim "selesai" di atas didukung build lokal yang lolos (exit code 0)
-  dan/atau verifikasi browser. Yang masih ⏳ akan saya kabari hasilnya pagi ini
-  juga begitu verifikasi selesai.
+- Semua status ✅ di atas didukung hasil cek browser langsung di URL preview,
+  bukan tebakan. Yang masih ⏳/⚠️ butuh tindakan Anda.
