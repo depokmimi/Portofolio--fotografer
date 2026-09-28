@@ -1,10 +1,24 @@
 import type { Metadata } from "next";
-import { Bodoni_Moda, Manrope } from "next/font/google";
+import { Anton, Bodoni_Moda, Manrope, Pinyon_Script } from "next/font/google";
 import "./globals.css";
+
+const anton = Anton({
+  variable: "--font-anton",
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+});
 
 const bodoni = Bodoni_Moda({
   variable: "--font-bodoni",
   subsets: ["latin"],
+  display: "swap",
+});
+
+const pinyon = Pinyon_Script({
+  variable: "--font-pinyon",
+  subsets: ["latin"],
+  weight: "400",
   display: "swap",
 });
 
@@ -24,7 +38,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="id"
-      className={`${bodoni.variable} ${manrope.variable} h-full antialiased`}
+      className={`${anton.variable} ${bodoni.variable} ${pinyon.variable} ${manrope.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-paper text-ink">{children}</body>
     </html>

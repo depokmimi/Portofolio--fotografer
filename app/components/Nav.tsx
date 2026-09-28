@@ -23,13 +23,20 @@ export default function Nav() {
         aria-label="Navigasi utama"
         className="flex items-center justify-between px-5 py-4 text-white md:px-10"
       >
-        <Link href="/" className="font-display text-xl tracking-wide">
+        <Link
+          href="/"
+          className="font-display text-2xl tracking-wide"
+          aria-label="Beranda"
+        >
           MRR
         </Link>
-        <ul className="hidden items-center gap-7 text-[13px] uppercase tracking-[0.18em] md:flex">
+        <ul className="hidden items-center gap-7 text-[12px] font-medium uppercase tracking-[0.22em] md:flex">
           {links.map((l) => (
             <li key={l.href}>
-              <Link href={l.href} className="opacity-80 transition-opacity hover:opacity-100">
+              <Link
+                href={l.href}
+                className="opacity-70 transition-opacity hover:opacity-100"
+              >
                 {l.label}
               </Link>
             </li>
@@ -37,7 +44,7 @@ export default function Nav() {
         </ul>
         <Link
           href="/kontak"
-          className="border border-white/60 px-4 py-2 text-[12px] uppercase tracking-[0.18em] transition-colors hover:bg-white hover:text-black"
+          className="border border-white/60 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.22em] transition-colors hover:bg-white hover:text-black"
         >
           Booking
         </Link>
