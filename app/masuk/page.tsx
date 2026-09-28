@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { User } from "@supabase/supabase-js";
+import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import { getSupabase, isOwnerEmail, isSupabaseConfigured } from "@/lib/supabase";
 
@@ -169,9 +170,14 @@ export default function MasukPage() {
                   {user.email}
                 </p>
                 <p className="mt-3 text-sm text-white/50">
-                  Halaman admin (upload & atur karya) lagi dibuat — bentar
-                  lagi jadi.
+                  Kelola karya portofoliomu di halaman admin.
                 </p>
+                <Link
+                  href="/admin"
+                  className="mt-5 flex w-full items-center justify-center gap-2 rounded-full bg-[#ffd60a] px-6 py-3 text-sm font-bold tracking-wide text-black uppercase transition-colors hover:bg-[#ffde33]"
+                >
+                  Buka halaman admin →
+                </Link>
                 <button
                   onClick={logout}
                   className="mt-5 w-full cursor-pointer rounded-full border border-white/20 px-6 py-3 text-sm font-semibold tracking-wide text-white/80 uppercase transition-colors hover:bg-white/10"
