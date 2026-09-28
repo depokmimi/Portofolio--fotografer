@@ -1,8 +1,0 @@
-{
-  "schemaVersion": 1,
-  "command": "deliver",
-  "status": "pending",
-  "receiptId": "7dce5676-6041-421f-b229-db6c17081175",
-  "input": "/home/hatch/workspace/portofolio-v2/.archify/architecture-portofolio-20260928-145114/candidate.json",
-  "output": "/home/hatch/workspace/portofolio-v2/.archify/architecture-portofolio-20260928-145114/portofolio-v2.html"
-}
