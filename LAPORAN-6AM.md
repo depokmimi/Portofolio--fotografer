@@ -75,7 +75,7 @@ TIDAK disentuh.**
 
 ---
 
-## Status verifikasi (cek browser 29 Sep ~00:00 WIB)
+## Status verifikasi (cek browser 28 Sep ~21:52 WIB)
 
 | Halaman | Status |
 |---|---|
