@@ -1,33 +1,41 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence } from "motion/react";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import PageHeader from "../components/PageHeader";
 import Lightbox, { type LightboxPhoto } from "../components/Lightbox";
 import Reveal from "../components/Reveal";
+import { getPhotos, workPhotoUrl, type WorkPhoto } from "@/lib/works";
 
 interface Photo extends LightboxPhoto {
   category: string;
 }
 
-const PHOTOS: Photo[] = [
-  { src: "/images/wedding.jpg", title: "Janji Suci", category: "Wedding" },
-  { src: "/images/prewed.jpg", title: "Cerita Kita Berdua", category: "Prewedding" },
-  { src: "/images/portrait.jpg", title: "Tatapan", category: "Portrait" },
-  { src: "/images/wisuda.jpg", title: "Hari Kelulusan", category: "Wisuda" },
-  { src: "/images/hero.jpg", title: "Senja Pengantin", category: "Wedding" },
-];
-
 const FILTERS = ["Semua", "Wedding", "Prewedding", "Portrait", "Wisuda"];
 
+function toPhoto(w: WorkPhoto): Photo {
+  return { src: workPhotoUrl(w), title: w.title, category: w.category };
+}
+
 export default function GaleriClient() {
+  const [photos, setPhotos] = useState<Photo[]>([]);
   const [filter, setFilter] = useState("Semua");
   const [lightbox, setLightbox] = useState<number | null>(null);
 
+  useEffect(() => {
+    let alive = true;
+    getPhotos().then((rows) => {
+      if (alive) setPhotos(rows.map(toPhoto));
+    });
+    return () => {
+      alive = false;
+    };
+  }, []);
+
   const filtered =
-    filter === "Semua" ? PHOTOS : PHOTOS.filter((p) => p.category === filter);
+    filter === "Semua" ? photos : photos.filter((p) => p.category === filter);
 
   return (
     <>
