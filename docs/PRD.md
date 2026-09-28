@@ -11,7 +11,7 @@
 
 Rebuild total (dari nol) website portofolio fotografer milik **Muhamad Ramdhani Rachmansyah** dengan standar kualitas yang jauh lebih tinggi. Frontend ditulis ulang dari awal memakai seluruh skill AI yang terpasang (Taste, UI UX Pro Max, Framer Motion/Motion, Autoskills, Context7, dsb.); **backend dipakai ulang apa adanya** (Supabase Auth + tabel `works`, Google Drive OAuth, API upload) karena sudah terbukti jalan.
 
-Tema **Editorial Bold** dipertahankan (pilihan pemilik). Hasil akhir: situs yang terasa hidup (animasi sinematik), anti-generik, cepat, aman, dan mudah dikelola pemilik dari HP.
+Tema **Dark Monokrom Luxury** (disetujui pemilik 2026-09-28 via referensi Instagram). Hasil akhir: situs yang terasa hidup (animasi sinematik), anti-generik, cepat, aman, dan mudah dikelola pemilik dari HP.
 
 ## 2. Latar Belakang & Masalah
 
@@ -21,7 +21,7 @@ Tema **Editorial Bold** dipertahankan (pilihan pemilik). Hasil akhir: situs yang
 
 ## 3. Tujuan
 
-1. Frontend baru 100% dengan kualitas desain setara standar Awwwards (arah editorial-bold).
+1. Frontend baru 100% dengan kualitas desain setara standar Awwwards (arah dark-monokrom-luxury).
 2. Semua 12 skill terpasang dipakai pada tempatnya (lihat §8).
 3. Backend v1 dipakai ulang tanpa perubahan (nol risiko regresi data).
 4. Skor Lighthouse ≥ 90 di semua kategori pada halaman publik (mobile).
@@ -46,7 +46,7 @@ Tema **Editorial Bold** dipertahankan (pilihan pemilik). Hasil akhir: situs yang
 - F-07 Halaman Tentang: profil, foto pemilik, gaya fotografi, layanan
 - F-08 Halaman Kontak: baris kontak besar bernomor (WhatsApp, Instagram, Email) + jam respons
 - F-09 Chatbox AI FAQ (tanpa biaya, tahap 1) — logika v1 dipakai ulang, UI ditulis ulang
-- F-10 Tema Editorial Bold terang/gelap + animasi sinematik (Motion)
+- F-10 Tema Dark Monokrom Luxury (hitam/charcoal, foto B&W sinematik, headline uppercase raksasa) + animasi sinematik (Motion)
 - F-11 SEO penuh: metadata, Open Graph, sitemap, semantic HTML
 - F-12 Aksesibilitas: kontras WCAG AA, fokus keyboard, `prefers-reduced-motion`, alt deskriptif
 - F-13 Monitoring error via Sentry (laporan error produksi otomatis)

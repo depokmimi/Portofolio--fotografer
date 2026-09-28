@@ -76,7 +76,7 @@ Prioritas: **M** = Must (wajib), **S** = Should, **C** = Could (NANTI).
 
 | ID | Kebutuhan | Prioritas |
 |---|---|---|
-| FR-29 | Tema Editorial Bold; mode terang & gelap (satu tema per halaman, tidak belang) | M |
+| FR-29 | Tema Dark Monokrom Luxury: satu tema gelap konsisten di semua halaman (tidak belang) | M |
 | FR-30 | Animasi sinematik: hero reveal berurutan, parallax, reveal-on-scroll, transisi antarhalaman (Motion) | M |
 | FR-31 | Seluruh animasi di atas menghormati `prefers-reduced-motion` | M |
 
