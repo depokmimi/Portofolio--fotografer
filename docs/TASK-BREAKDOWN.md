@@ -13,7 +13,7 @@ Estimasi kasar (S < 2 jam, M = 2–5 jam, L = 0,5–1 hari). Backend (Fase B) ma
 - [x] T-02 Install: `motion`, `@sentry/nextjs`; jalankan `npx autoskills` (13 skill best-practice) (S) — SELESAI: motion terpasang; autoskills dijalankan (12 skill project-specific)
 - [x] T-03 Salin dari v1 TANPA perubahan: `lib/`, `app/api/`, `supabase/`, env var (S) — SELESAI: lib/supabase*, lib/works, lib/drive (port dari galeri), API drive auth/callback disalin & diadaptasi
 - [x] T-04 Setup repo GitHub + Vercel project (preview branch `v2`) (S) — SELESAI: Repo GitHub + Vercel project ada; preview branch v2 aktif (dep protection ON)
-- [ ] T-05 Buat knowledge graph awal dengan Graphify (S)
+- [x] T-05 Buat knowledge graph awal dengan Graphify (S) — graphify-out/graph.json 243 nodes/458 edges, 10 communities, code-only
 
 ## Fase B — Backend Pakai Ulang (verifikasi, bukan bangun)
 - [x] T-06 Verifikasi tabel `works` + RLS di Supabase (S) — SELESAI: Tabel works + RLS terverifikasi via SQL Editor (2026-09-28)
@@ -49,8 +49,8 @@ Estimasi kasar (S < 2 jam, M = 2–5 jam, L = 0,5–1 hari). Backend (Fase B) ma
 ## Fase 6 — QA Anti-Slop + Go-live
 - [ ] T-25 QA checklist UI/UX v2.0 §7 (eyebrow, CTA, layout, kontras, copy) (M)
 - [ ] T-26 Lighthouse mobile ≥ 90 semua kategori; perbaiki yang kurang (M)
-- [ ] T-27 Buat diagram arsitektur dengan Archify → `docs/architecture.html` (S)
-- [ ] T-28 Perbarui knowledge graph (Graphify) (S)
+- [x] T-27 Buat diagram arsitektur dengan Archify → `docs/architecture.html` (S) — 771 KB, terverifikasi valid
+- [x] T-28 Perbarui knowledge graph (Graphify) (S) — GRAPH_REPORT.md + graph.html
 - [ ] T-29 Review pemilik di HP via URL preview (S — pemilik)
 - [ ] T-30 Merge `v2` → production; sambungkan domain `portofolio.muramsyah.biz.id` (S)
 
