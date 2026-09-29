@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Anton, Bodoni_Moda, Manrope, Pinyon_Script } from "next/font/google";
 import "./globals.css";
-import Chatbox from "./components/Chatbox";
 
 const anton = Anton({
   variable: "--font-anton",
@@ -29,7 +28,7 @@ const manrope = Manrope({
   display: "swap",
 });
 
-const siteUrl = "https://portofolio-fotografer.vercel.app";
+const siteUrl = "https://portofolio.muramsyah.biz.id";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -65,7 +64,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full bg-paper text-ink">
         {children}
-        <Chatbox />
       </body>
     </html>
   );
