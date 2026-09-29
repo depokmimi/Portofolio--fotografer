@@ -177,8 +177,8 @@ export default function AdminClient() {
         const end = Math.min(offset + CHUNK, file.size);
         let res: Response | null = null;
         let lastErr = "";
-        // Retry 3x per chunk dengan jeda (via proxy server, hindari CORS browser->Google)
-        for (let attempt = 1; attempt <= 3; attempt++) {
+        // Retry 5x per chunk dengan jeda exponential
+        for (let attempt = 1; attempt <= 5; attempt++) {
           try {
             const proxyUrl = `/api/drive/upload/chunk?start=${offset}&end=${end}&total=${file.size}`;
             res = await fetch(proxyUrl, {
@@ -200,14 +200,14 @@ export default function AdminClient() {
             break; // sukses, keluar dari loop retry
           } catch (e) {
             lastErr = e instanceof Error ? e.message : "network error";
-            if (attempt < 3) {
-              setMsg(`Mengunggah… ${chunkIdx}/${totalChunks} (percobaan ${attempt + 1}/3)`);
-              await new Promise((r) => setTimeout(r, 2000 * attempt));
+            if (attempt < 5) {
+              setMsg(`Mengunggah… ${chunkIdx}/${totalChunks} (percobaan ${attempt + 1}/5)`);
+              await new Promise((r) => setTimeout(r, 3000 * attempt));
             }
           }
         }
         if (!res) {
-          throw new Error(`Gagal mengunggah bagian ${chunkIdx}/${totalChunks} setelah 3x coba (${lastErr}). Periksa koneksi lalu coba lagi.`);
+          throw new Error(`Gagal mengunggah bagian ${chunkIdx}/${totalChunks} setelah 5x coba (${lastErr}). Periksa koneksi lalu coba lagi.`);
         }
         if (res.status === 308) {
           const m = res.headers.get("range")?.match(/bytes=0-(\d+)/);
