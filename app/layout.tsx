@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Anton, Bodoni_Moda, Manrope, Pinyon_Script } from "next/font/google";
 import "./globals.css";
-import YoutubeAudioPlayer from "./components/YoutubeAudioPlayer";
+import MusicPlayer from "./components/MusicPlayer";
 
 const anton = Anton({
   variable: "--font-anton",
@@ -68,7 +68,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="min-h-full bg-paper text-ink">
         {children}
-        <YoutubeAudioPlayer />
+        <MusicPlayer />
       </body>
     </html>
   );
