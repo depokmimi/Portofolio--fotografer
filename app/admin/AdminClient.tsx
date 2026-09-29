@@ -163,7 +163,6 @@ export default function AdminClient() {
             res = await fetch(sessionUri, {
               method: "PUT",
               headers: {
-                "Content-Length": String(end - offset),
                 "Content-Range": `bytes ${offset}-${end - 1}/${file.size}`,
               },
               body: file.slice(offset, end),
