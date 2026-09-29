@@ -2,22 +2,32 @@
 
 import { useState, useRef, useEffect } from "react";
 
-// Ganti URL ini dengan musik pilihanmu (MP3 langsung)
+// Musik royalty-free dari repo mulmocast-media (bisa di-stream langsung)
 const TRACKS = [
   {
-    title: "Ambient Piano",
-    artist: "Background Music",
-    url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+    title: "Theme",
+    artist: "mulmocast-media",
+    url: "https://raw.githubusercontent.com/receptron/mulmocast-media/main/bgms/theme001.mp3",
   },
   {
-    title: "Chill Vibes",
-    artist: "Background Music",
-    url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+    title: "Classical I",
+    artist: "mulmocast-media",
+    url: "https://raw.githubusercontent.com/receptron/mulmocast-media/main/bgms/classical001.mp3",
   },
   {
-    title: "Cinematic Mood",
-    artist: "Background Music",
-    url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+    title: "Classical II",
+    artist: "mulmocast-media",
+    url: "https://raw.githubusercontent.com/receptron/mulmocast-media/main/bgms/classical002.mp3",
+  },
+  {
+    title: "Vibe I",
+    artist: "mulmocast-media",
+    url: "https://raw.githubusercontent.com/receptron/mulmocast-media/main/bgms/vibe001.mp3",
+  },
+  {
+    title: "Vibe II",
+    artist: "mulmocast-media",
+    url: "https://raw.githubusercontent.com/receptron/mulmocast-media/main/bgms/vibe002.mp3",
   },
 ];
 
