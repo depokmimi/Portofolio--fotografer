@@ -129,6 +129,26 @@ export default function AdminClient() {
     loadWorks();
   }
 
+  async function testUploadConnection() {
+    setMsg("Mengetes koneksi upload…");
+    try {
+      // Kirim 256KB data dummy ke endpoint test
+      const dummy = new Uint8Array(256 * 1024);
+      const r = await fetch("/api/drive/upload/test-chunk", {
+        method: "POST",
+        body: dummy,
+      });
+      const data = await r.json();
+      if (r.ok && data.ok) {
+        setMsg(`Tes berhasil! Server menerima ${data.receivedBytes} bytes. Koneksi browser→server OK.`);
+      } else {
+        setMsg(`Tes gagal: ${data.error || r.status}`);
+      }
+    } catch (e) {
+      setMsg(`Tes gagal: ${e instanceof Error ? e.message : "unknown"}. Browser tidak bisa kirim data ke server.`);
+    }
+  }
+
   async function startUpload() {
     if (!file || !title.trim() || busy) return;
     setBusy(true);
@@ -367,13 +387,21 @@ export default function AdminClient() {
                 ))}
               </select>
             </label>
-            <div className="flex items-end">
+            <div className="flex items-end gap-2">
               <button
                 onClick={startUpload}
                 disabled={!file || !title.trim() || busy}
-                className="w-full bg-white px-5 py-3 text-[11px] font-bold tracking-[0.2em] text-black uppercase transition-opacity disabled:cursor-not-allowed disabled:opacity-30"
+                className="flex-1 bg-white px-5 py-3 text-[11px] font-bold tracking-[0.2em] text-black uppercase transition-opacity disabled:cursor-not-allowed disabled:opacity-30"
               >
                 {busy ? "Mengunggah…" : "Unggah ke Drive"}
+              </button>
+              <button
+                onClick={testUploadConnection}
+                disabled={busy}
+                className="border border-white/20 px-3 py-3 text-[11px] text-white/60 uppercase disabled:opacity-30"
+                title="Tes koneksi upload"
+              >
+                Tes
               </button>
             </div>
           </div>
