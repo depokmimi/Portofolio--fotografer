@@ -10,8 +10,10 @@ export const maxDuration = 60;
  * Body: binary chunk mentah. Query: session (encoded sessionUri), start, end, total.
  */
 export async function POST(request: Request) {
+  const t0 = Date.now();
   const gate = await requireOwner();
   if (!gate.ok) return gate.response;
+  const tAuth = Date.now();
 
   const url = new URL(request.url);
   const sessionUri = request.headers.get("x-session-uri") || "";
@@ -28,14 +30,22 @@ export async function POST(request: Request) {
   }
 
   const chunk = await request.arrayBuffer().catch(() => null);
+  const tRecv = Date.now();
   if (!chunk || chunk.byteLength === 0) {
     return NextResponse.json({ error: "Chunk kosong." }, { status: 400 });
   }
+
+  const timing = {
+    authMs: tAuth - t0,
+    recvMs: tRecv - tAuth,
+    googleMs: 0,
+  };
 
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 25000);
     let res: Response;
+    const tGoogleStart = Date.now();
     try {
       res = await fetch(sessionUri, {
         method: "PUT",
@@ -49,26 +59,29 @@ export async function POST(request: Request) {
     } finally {
       clearTimeout(timeout);
     }
+    timing.googleMs = Date.now() - tGoogleStart;
 
     if (res.status === 308) {
       const range = res.headers.get("range");
-      return NextResponse.json({ status: 308, range });
+      return NextResponse.json({ status: 308, range, timing });
     }
     if (res.ok) {
       const file = (await res.json().catch(() => ({}))) as { id?: string };
-      return NextResponse.json({ status: 200, id: file.id || null });
+      return NextResponse.json({ status: 200, id: file.id || null, timing });
     }
     const detail = await res.text().catch(() => "");
     return NextResponse.json(
-      { error: `Google menolak chunk (${res.status})`, detail: detail.slice(0, 200) },
+      { error: `Google menolak chunk (${res.status})`, detail: detail.slice(0, 200), timing },
       { status: 502 }
     );
   } catch (e) {
+    timing.googleMs = Date.now() - tRecv;
     const isAbort = e instanceof Error && e.name === "AbortError";
     return NextResponse.json(
       {
         error: isAbort ? "Timeout menghubungi Google (25 dtk)." : "Gagal menghubungi Google.",
-        detail: e instanceof Error ? e.message : ""
+        detail: e instanceof Error ? e.message : "",
+        timing,
       },
       { status: 502 }
     );

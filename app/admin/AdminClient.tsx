@@ -238,6 +238,10 @@ export default function AdminClient() {
             });
             const data = await res.json();
             if (!res.ok) throw new Error(data.error || `Server menolak chunk (${res.status})`);
+            // Tampilkan timing utk diagnosa (chunk pertama saja)
+            if (chunkIdx === 1 && data.timing) {
+              console.log("Timing chunk 1:", data.timing);
+            }
             // Normalisasi ke bentuk seperti respons Google
             if (data.status === 308) {
               res = new Response(null, {
