@@ -5,6 +5,11 @@ import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import PageHeader from "../components/PageHeader";
 import Reveal from "../components/Reveal";
+import {
+  getVideos,
+  workVideoUrl,
+  type WorkVideo,
+} from "@/lib/works";
 
 interface VideoItem {
   id: string;
@@ -79,7 +84,31 @@ function PlayBadge() {
 
 export default function VideoClient() {
   const [active, setActive] = useState<number | null>(null);
-  const [featured, ...rest] = VIDEOS;
+  const [videos, setVideos] = useState<VideoItem[]>(VIDEOS);
+
+  // Ambil video yang diupload via /admin dari Supabase.
+  // Kalau belum ada, pakai data contoh agar halaman tidak kosong.
+  useEffect(() => {
+    let cancelled = false;
+    getVideos().then((db) => {
+      if (cancelled || db.length === 0) return;
+      setVideos(
+        db.map((w) => ({
+          id: w.id,
+          title: w.title,
+          category: w.category,
+          duration: w.duration || "",
+          poster: w.poster,
+          src: workVideoUrl(w),
+        }))
+      );
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const [featured, ...rest] = videos;
 
   const close = useCallback(() => setActive(null), []);
 
@@ -181,12 +210,12 @@ export default function VideoClient() {
             onClick={close}
             role="dialog"
             aria-modal="true"
-            aria-label={VIDEOS[active].title}
+            aria-label={videos[active].title}
           >
             <div className="w-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
               <div className="mb-3 flex items-center justify-between gap-4">
                 <p className="font-display text-lg tracking-wide text-white uppercase">
-                  {VIDEOS[active].title}
+                  {videos[active].title}
                 </p>
                 <button
                   onClick={close}
@@ -197,8 +226,8 @@ export default function VideoClient() {
                 </button>
               </div>
               <video
-                key={VIDEOS[active].id}
-                src={VIDEOS[active].src}
+                key={videos[active].id}
+                src={videos[active].src}
                 controls
                 autoPlay
                 playsInline

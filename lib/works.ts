@@ -64,6 +64,55 @@ export async function getPhotos(): Promise<WorkPhoto[]> {
   }
 }
 
+/** Satu karya video. */
+export interface WorkVideo {
+  id: string;
+  title: string;
+  category: string;
+  duration: string;
+  /** URL poster (thumbnail Drive atau gambar lokal). */
+  poster: string;
+  /** URL video: Drive (kalau sudah wiring) atau URL langsung. */
+  src: string;
+  /** Kalau ada, video diambil dari Drive via API. */
+  driveFileId?: string;
+}
+
+/** URL streaming video karya dari Drive. */
+export function workVideoUrl(v: WorkVideo): string {
+  if (v.driveFileId) return `/api/drive/video/${v.driveFileId}`;
+  return v.src;
+}
+
+/**
+ * Ambil video karya dari Supabase (diurutkan berdasarkan position).
+ * Fallback ke daftar kosong kalau Supabase belum dikonfigurasi,
+ * tabel masih kosong, atau query gagal.
+ */
+export async function getVideos(): Promise<WorkVideo[]> {
+  if (!isSupabaseConfigured()) return [];
+  try {
+    const supabase = getSupabase()!;
+    const { data, error } = await supabase
+      .from("works")
+      .select("*")
+      .eq("type", "video")
+      .order("position", { ascending: true });
+    if (error || !data || data.length === 0) return [];
+    return (data as WorkRow[]).map((w) => ({
+      id: w.id,
+      title: w.title,
+      category: w.category,
+      duration: w.duration ?? "",
+      poster: `/api/drive/thumb/${w.drive_file_id}`,
+      src: "",
+      driveFileId: w.drive_file_id,
+    }));
+  } catch {
+    return [];
+  }
+}
+
 /** Ambil semua karya (foto + video) untuk halaman admin. */
 export async function getAllWorks(): Promise<WorkRow[]> {
   if (!isSupabaseConfigured()) return [];
