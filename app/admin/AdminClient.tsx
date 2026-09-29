@@ -237,10 +237,9 @@ export default function AdminClient() {
               body: file.slice(offset, end),
             });
             const data = await res.json();
-            if (!res.ok) throw new Error(data.error || `Server menolak chunk (${res.status})`);
-            // Tampilkan timing utk diagnosa (chunk pertama saja)
-            if (chunkIdx === 1 && data.timing) {
-              console.log("Timing chunk 1:", data.timing);
+            if (!res.ok) {
+              const t = data.timing ? ` [auth:${data.timing.authMs}ms recv:${data.timing.recvMs}ms google:${data.timing.googleMs}ms]` : "";
+              throw new Error((data.error || `Server menolak chunk (${res.status})`) + t);
             }
             // Normalisasi ke bentuk seperti respons Google
             if (data.status === 308) {
