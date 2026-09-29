@@ -14,7 +14,7 @@ export async function POST(request: Request) {
   if (!gate.ok) return gate.response;
 
   const url = new URL(request.url);
-  const sessionUri = url.searchParams.get("session");
+  const sessionUri = request.headers.get("x-session-uri") || "";
   const start = parseInt(url.searchParams.get("start") || "", 10);
   const end = parseInt(url.searchParams.get("end") || "", 10);
   const total = parseInt(url.searchParams.get("total") || "", 10);

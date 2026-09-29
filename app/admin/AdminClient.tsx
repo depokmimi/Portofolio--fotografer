@@ -160,9 +160,10 @@ export default function AdminClient() {
         // Retry 3x per chunk dengan jeda (via proxy server, hindari CORS browser->Google)
         for (let attempt = 1; attempt <= 3; attempt++) {
           try {
-            const proxyUrl = `/api/drive/upload/chunk?session=${encodeURIComponent(sessionUri)}&start=${offset}&end=${end}&total=${file.size}`;
+            const proxyUrl = `/api/drive/upload/chunk?start=${offset}&end=${end}&total=${file.size}`;
             res = await fetch(proxyUrl, {
               method: "POST",
+              headers: { "X-Session-Uri": sessionUri },
               body: file.slice(offset, end),
             });
             const data = await res.json();
