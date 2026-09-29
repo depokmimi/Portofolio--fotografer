@@ -33,14 +33,22 @@ export async function POST(request: Request) {
   }
 
   try {
-    const res = await fetch(sessionUri, {
-      method: "PUT",
-      headers: {
-        "Content-Length": String(chunk.byteLength),
-        "Content-Range": `bytes ${start}-${end - 1}/${total}`,
-      },
-      body: chunk,
-    });
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 25000);
+    let res: Response;
+    try {
+      res = await fetch(sessionUri, {
+        method: "PUT",
+        headers: {
+          "Content-Length": String(chunk.byteLength),
+          "Content-Range": `bytes ${start}-${end - 1}/${total}`,
+        },
+        body: chunk,
+        signal: controller.signal,
+      });
+    } finally {
+      clearTimeout(timeout);
+    }
 
     if (res.status === 308) {
       const range = res.headers.get("range");
@@ -56,8 +64,12 @@ export async function POST(request: Request) {
       { status: 502 }
     );
   } catch (e) {
+    const isAbort = e instanceof Error && e.name === "AbortError";
     return NextResponse.json(
-      { error: "Gagal menghubungi Google.", detail: e instanceof Error ? e.message : "" },
+      {
+        error: isAbort ? "Timeout menghubungi Google (25 dtk)." : "Gagal menghubungi Google.",
+        detail: e instanceof Error ? e.message : ""
+      },
       { status: 502 }
     );
   }
