@@ -155,18 +155,30 @@ export default function AdminClient() {
         chunkIdx++;
         setMsg(`Mengunggah… ${chunkIdx}/${totalChunks} (${Math.round((offset / file.size) * 100)}%)`);
         const end = Math.min(offset + CHUNK, file.size);
-        let res: Response;
-        try {
-          res = await fetch(sessionUri, {
-            method: "PUT",
-            headers: {
-              "Content-Length": String(end - offset),
-              "Content-Range": `bytes ${offset}-${end - 1}/${file.size}`,
-            },
-            body: file.slice(offset, end),
-          });
-        } catch {
-          throw new Error(`Gagal mengunggah bagian ${chunkIdx}/${totalChunks}. Koneksi ke Google terputus — coba lagi.`);
+        let res: Response | null = null;
+        let lastErr = "";
+        // Retry 3x per chunk dengan jeda
+        for (let attempt = 1; attempt <= 3; attempt++) {
+          try {
+            res = await fetch(sessionUri, {
+              method: "PUT",
+              headers: {
+                "Content-Length": String(end - offset),
+                "Content-Range": `bytes ${offset}-${end - 1}/${file.size}`,
+              },
+              body: file.slice(offset, end),
+            });
+            break; // sukses, keluar dari loop retry
+          } catch (e) {
+            lastErr = e instanceof Error ? e.message : "network error";
+            if (attempt < 3) {
+              setMsg(`Mengunggah… ${chunkIdx}/${totalChunks} (percobaan ${attempt + 1}/3)`);
+              await new Promise((r) => setTimeout(r, 2000 * attempt));
+            }
+          }
+        }
+        if (!res) {
+          throw new Error(`Gagal mengunggah bagian ${chunkIdx}/${totalChunks} setelah 3x coba (${lastErr}). Periksa koneksi lalu coba lagi.`);
         }
         if (res.status === 308) {
           const m = res.headers.get("range")?.match(/bytes=0-(\d+)/);
