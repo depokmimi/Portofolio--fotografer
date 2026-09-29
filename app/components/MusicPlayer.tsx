@@ -47,9 +47,44 @@ export default function MusicPlayer() {
   const [currentTrack, setCurrentTrack] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
   const [search, setSearch] = useState("");
+  const [downloading, setDownloading] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const track = TRACKS[currentTrack];
+
+  // Download satu lagu sebagai file MP3
+  const downloadTrack = useCallback(async (index: number) => {
+    const t = TRACKS[index];
+    const filename = `${t.title} - ${t.artist}.mp3`;
+    setDownloading(filename);
+    try {
+      const res = await fetch(t.src);
+      if (!res.ok) throw new Error("Gagal mengunduh");
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch {
+      // Fallback: buka URL langsung kalau fetch gagal
+      window.open(t.src, "_blank");
+    } finally {
+      setDownloading(null);
+    }
+  }, []);
+
+  // Download semua lagu satu per satu
+  const downloadAll = useCallback(async () => {
+    for (let i = 0; i < TRACKS.length; i++) {
+      await downloadTrack(i);
+      // Jeda sebentar biar browser tidak blokir download beruntun
+      await new Promise((r) => setTimeout(r, 800));
+    }
+  }, [downloadTrack]);
 
   const filteredTracks = TRACKS.map((t, i) => ({ ...t, index: i })).filter(
     (t) =>
@@ -234,40 +269,70 @@ export default function MusicPlayer() {
           {/* Song list */}
           <div className="flex-1 overflow-y-auto">
             {filteredTracks.map((t) => (
-              <button
+              <div
                 key={t.src}
-                onClick={() => playTrack(t.index)}
-                className={`flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors hover:bg-white/5 ${
+                className={`flex w-full items-center gap-3 px-4 py-2.5 transition-colors hover:bg-white/5 ${
                   t.index === currentTrack ? "bg-white/10" : ""
                 }`}
               >
-                <span className="w-6 shrink-0 text-center text-xs text-white/40">
-                  {t.index === currentTrack && isPlaying ? (
-                    <span className="inline-flex items-end gap-0.5">
-                      <span className="w-0.5 animate-pulse bg-white" style={{ height: "12px" }} />
-                      <span className="w-0.5 animate-pulse bg-white" style={{ height: "8px", animationDelay: "0.2s" }} />
-                      <span className="w-0.5 animate-pulse bg-white" style={{ height: "10px", animationDelay: "0.4s" }} />
-                    </span>
-                  ) : (
-                    t.index + 1
-                  )}
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className={`block truncate text-sm ${t.index === currentTrack ? "font-semibold text-white" : "text-white/80"}`}>
-                    {t.title}
+                <button
+                  onClick={() => playTrack(t.index)}
+                  className="flex min-w-0 flex-1 items-center gap-3 text-left"
+                >
+                  <span className="w-6 shrink-0 text-center text-xs text-white/40">
+                    {t.index === currentTrack && isPlaying ? (
+                      <span className="inline-flex items-end gap-0.5">
+                        <span className="w-0.5 animate-pulse bg-white" style={{ height: "12px" }} />
+                        <span className="w-0.5 animate-pulse bg-white" style={{ height: "8px", animationDelay: "0.2s" }} />
+                        <span className="w-0.5 animate-pulse bg-white" style={{ height: "10px", animationDelay: "0.4s" }} />
+                      </span>
+                    ) : (
+                      t.index + 1
+                    )}
                   </span>
-                  <span className="block truncate text-xs text-white/40">{t.artist}</span>
-                </span>
-              </button>
+                  <span className="min-w-0 flex-1">
+                    <span className={`block truncate text-sm ${t.index === currentTrack ? "font-semibold text-white" : "text-white/80"}`}>
+                      {t.title}
+                    </span>
+                    <span className="block truncate text-xs text-white/40">{t.artist}</span>
+                  </span>
+                </button>
+                <button
+                  onClick={() => downloadTrack(t.index)}
+                  disabled={downloading !== null}
+                  className="shrink-0 p-1.5 text-white/40 hover:text-white disabled:opacity-50"
+                  aria-label={`Download ${t.title}`}
+                  title="Download MP3"
+                >
+                  {downloading === `${t.title} - ${t.artist}.mp3` ? (
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="animate-spin">
+                      <path d="M21 12a9 9 0 11-6.219-8.56" />
+                    </svg>
+                  ) : (
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
+                    </svg>
+                  )}
+                </button>
+              </div>
             ))}
             {filteredTracks.length === 0 && (
               <p className="p-4 text-center text-sm text-white/40">Lagu tidak ditemukan</p>
             )}
           </div>
 
-          <p className="border-t border-white/10 p-2 text-center text-[10px] text-white/30">
-            {TRACKS.length} lagu • Tetap bunyi walau web di-minimize
-          </p>
+          <div className="border-t border-white/10 p-2">
+            <button
+              onClick={downloadAll}
+              disabled={downloading !== null}
+              className="w-full border border-white/20 py-2 text-xs tracking-[0.2em] text-white uppercase transition-colors hover:bg-white hover:text-black disabled:opacity-50"
+            >
+              {downloading ? `Mengunduh... ${downloading}` : `Download Semua (${TRACKS.length} Lagu)`}
+            </button>
+            <p className="mt-1.5 text-center text-[10px] text-white/30">
+              {TRACKS.length} lagu • Tetap bunyi walau web di-minimize
+            </p>
+          </div>
         </div>
       ) : (
         <button
