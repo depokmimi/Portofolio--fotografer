@@ -83,8 +83,9 @@ export default function Hero() {
       {/* Foto kanan */}
       <div className="relative min-h-[62vh] overflow-hidden md:min-h-0">
         <motion.img
-          src="/images/portrait.jpg"
+          src="/images/portrait.webp"
           alt="Portrait hitam putih dramatis"
+          fetchPriority="high"
           style={reduce ? undefined : { y: imgY }}
           initial={reduce ? undefined : { scale: 1.15 }}
           animate={{ scale: 1 }}

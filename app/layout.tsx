@@ -62,6 +62,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="id"
       className={`${anton.variable} ${bodoni.variable} ${pinyon.variable} ${manrope.variable} h-full antialiased`}
     >
+      <head>
+        <link rel="preload" href="/images/portrait.webp" as="image" fetchPriority="high" />
+      </head>
       <body className="min-h-full bg-paper text-ink">
         {children}
       </body>
