@@ -24,7 +24,7 @@ interface DriveStatus {
   warning?: string;
 }
 
-const CHUNK = 256 * 1024;
+const CHUNK = 1024 * 1024;
 
 function fmtBytes(n: number): string {
   if (!n) return "0 B";
