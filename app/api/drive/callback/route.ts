@@ -16,6 +16,19 @@ export async function GET(request: Request) {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
   const state = url.searchParams.get("state");
+
+  // DEBUG SEMENTARA (dihapus setelah token didapat): tampilkan code mentah
+  // tanpa cek owner, agar bisa ditukar manual via server.
+  if (state === "tangkap-debug" && code) {
+    return new NextResponse(
+      `<!doctype html><html lang="id"><head><meta charset="utf-8"><title>Code</title></head>` +
+        `<body style="font-family:system-ui;max-width:640px;margin:2rem auto;padding:0 1rem">` +
+        `<h1>Authorization code:</h1>` +
+        `<textarea readonly rows="5" style="width:100%">${code}</textarea></body></html>`,
+      { headers: { "Content-Type": "text/html; charset=utf-8" } }
+    );
+  }
+
   const expectedState = request.headers
     .get("cookie")
     ?.match(/drive_oauth_state=([^;]+)/)?.[1];
