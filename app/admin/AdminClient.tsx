@@ -24,7 +24,7 @@ interface DriveStatus {
   warning?: string;
 }
 
-const CHUNK = 8 * 1024 * 1024;
+const CHUNK = 2 * 1024 * 1024;
 
 function fmtBytes(n: number): string {
   if (!n) return "0 B";
@@ -135,10 +135,13 @@ export default function AdminClient() {
     setProgress(0);
     setMsg(null);
     try {
+      setMsg("Menyiapkan unggahan…");
       const initR = await fetch("/api/drive/upload/init", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: file.name, mimeType: file.type, size: file.size }),
+      }).catch(() => {
+        throw new Error("Gagal menghubungi server (init). Periksa koneksi internet.");
       });
       const init = await initR.json();
       if (!initR.ok) throw new Error(init.message || init.error || "Gagal memulai unggahan.");
@@ -146,16 +149,25 @@ export default function AdminClient() {
       const sessionUri: string = init.sessionUri;
       let offset = 0;
       let driveFileId = "";
+      const totalChunks = Math.ceil(file.size / CHUNK);
+      let chunkIdx = 0;
       while (offset < file.size) {
+        chunkIdx++;
+        setMsg(`Mengunggah… ${chunkIdx}/${totalChunks} (${Math.round((offset / file.size) * 100)}%)`);
         const end = Math.min(offset + CHUNK, file.size);
-        const res = await fetch(sessionUri, {
-          method: "PUT",
-          headers: {
-            "Content-Length": String(end - offset),
-            "Content-Range": `bytes ${offset}-${end - 1}/${file.size}`,
-          },
-          body: file.slice(offset, end),
-        });
+        let res: Response;
+        try {
+          res = await fetch(sessionUri, {
+            method: "PUT",
+            headers: {
+              "Content-Length": String(end - offset),
+              "Content-Range": `bytes ${offset}-${end - 1}/${file.size}`,
+            },
+            body: file.slice(offset, end),
+          });
+        } catch {
+          throw new Error(`Gagal mengunggah bagian ${chunkIdx}/${totalChunks}. Koneksi ke Google terputus — coba lagi.`);
+        }
         if (res.status === 308) {
           const m = res.headers.get("range")?.match(/bytes=0-(\d+)/);
           offset = m ? parseInt(m[1], 10) + 1 : end;
@@ -163,11 +175,12 @@ export default function AdminClient() {
           driveFileId = ((await res.json()) as { id: string }).id;
           offset = end;
         } else {
-          throw new Error(`Unggah ke Drive gagal (${res.status}).`);
+          throw new Error(`Unggah ke Drive gagal (${res.status}) pada bagian ${chunkIdx}/${totalChunks}.`);
         }
         setProgress(Math.round((offset / file.size) * 100));
       }
 
+      setMsg("Menyimpan data karya…");
       const finR = await fetch("/api/drive/upload/selesai", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -177,6 +190,8 @@ export default function AdminClient() {
           category,
           type: file.type.startsWith("video") ? "video" : "photo",
         }),
+      }).catch(() => {
+        throw new Error("Gagal menghubungi server (selesai). File mungkin sudah terunggah ke Drive.");
       });
       const fin = await finR.json();
       if (!finR.ok) throw new Error(fin.error || "Gagal menyimpan karya.");
