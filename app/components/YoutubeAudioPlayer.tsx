@@ -2,13 +2,13 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 
-// Ganti dengan ID video/playlist YouTube pilihanmu
-// Contoh: "dQw4w9WgXcQ" adalah ID video (dari youtube.com/watch?v=dQw4w9WgXcQ)
-// Untuk playlist, pakai: { type: "playlist", id: "PLAYLIST_ID" }
+// Playlist dari Liked Music YouTube akun danraydepok@gmail.com
 const YOUTUBE_PLAYLIST = [
-  { title: "Lagu 1", videoId: "dQw4w9WgXcQ" },
-  { title: "Lagu 2", videoId: "dQw4w9WgXcQ" },
-  { title: "Lagu 3", videoId: "dQw4w9WgXcQ" },
+  { title: "Dengarlah Bintang Hatiku — Demeises", videoId: "Hf2GqXgv_FU" },
+  { title: "Invisible — Zeus X Crona & Julius Dreisig", videoId: "ytIGeNyR9Ng" },
+  { title: "AVANGARD (Slowed + Reverb + Bass Boosted) — LONOWN", videoId: "t1z7u3qrKpI" },
+  { title: "Di Sini Di Batas Kota Ini — Kapur Bagoes", videoId: "y1s1t3m1nd4" },
+  { title: "Ada Rindu Untukmu — Vanny Vabiola", videoId: "1UE2-Go8apg" },
 ];
 
 declare global {
