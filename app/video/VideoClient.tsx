@@ -142,7 +142,7 @@ export default function VideoClient() {
             <img
               src={featured.poster}
               alt={featured.title}
-              className="aspect-video w-full object-cover grayscale transition-transform duration-700 group-hover:scale-[1.03]"
+              className="aspect-video w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
               loading="eager"
             />
             <span className="absolute inset-0 bg-black/30 transition-colors group-hover:bg-black/10" />
@@ -179,7 +179,7 @@ export default function VideoClient() {
                   <img
                     src={v.poster}
                     alt={v.title}
-                    className="h-full w-full object-cover grayscale transition-transform duration-700 group-hover:scale-[1.04]"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                     loading="lazy"
                   />
                   <span className="absolute inset-0 bg-black/25 transition-colors group-hover:bg-black/5" />
@@ -231,7 +231,7 @@ export default function VideoClient() {
                 controls
                 autoPlay
                 playsInline
-                className="aspect-video w-full bg-black grayscale"
+                className="aspect-video w-full bg-black"
               />
             </div>
           </div>
