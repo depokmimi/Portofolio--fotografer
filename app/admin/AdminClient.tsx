@@ -33,12 +33,22 @@ function fmtBytes(n: number): string {
   return `${(n / 1024 ** i).toFixed(1)} ${u[i]}`;
 }
 
+interface DriveFile {
+  id: string;
+  name: string;
+  mimeType: string;
+  size: number;
+  type: string;
+}
+
 export default function AdminClient() {
   const router = useRouter();
   const [gate, setGate] = useState<"loading" | "ok" | "denied">("loading");
   const [works, setWorks] = useState<Work[]>([]);
   const [drive, setDrive] = useState<DriveStatus | null>(null);
   const [msg, setMsg] = useState<string | null>(null);
+  const [driveFiles, setDriveFiles] = useState<DriveFile[]>([]);
+  const [importing, setImporting] = useState<string | null>(null);
 
   // Upload state
   const [file, setFile] = useState<File | null>(null);
@@ -127,6 +137,46 @@ export default function AdminClient() {
       body: JSON.stringify({ id: other.id, patch: { position: w.position } }),
     });
     loadWorks();
+  }
+
+  const loadDriveFiles = useCallback(async () => {
+    try {
+      const r = await fetch("/api/drive/list");
+      if (!r.ok) return;
+      const data = await r.json();
+      const registered = new Set(works.map((w) => w.drive_file_id));
+      setDriveFiles((data.files || []).filter((f: DriveFile) => !registered.has(f.id)));
+    } catch {
+      /* abaikan */
+    }
+  }, [works]);
+
+  async function importFromDrive(f: DriveFile) {
+    const title = prompt(`Judul untuk "${f.name}":`, f.name.replace(/\.[^.]+$/, ""));
+    if (!title || !title.trim()) return;
+    setImporting(f.id);
+    setMsg(null);
+    try {
+      const r = await fetch("/api/drive/import", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          driveFileId: f.id,
+          name: f.name,
+          mimeType: f.mimeType,
+          title: title.trim(),
+          category,
+        }),
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error || "Gagal import.");
+      setMsg(`"${title.trim()}" berhasil ditambahkan.`);
+      loadWorks();
+    } catch (e) {
+      setMsg(e instanceof Error ? e.message : "Gagal import.");
+    } finally {
+      setImporting(null);
+    }
   }
 
   async function testUploadConnection() {
@@ -415,10 +465,49 @@ export default function AdminClient() {
           )}
         </section>
 
+        {/* IMPORT DARI DRIVE */}
+        <section className="mt-px border border-white/10 bg-black p-6">
+          <div className="flex items-center justify-between">
+            <p className="text-[11px] tracking-[0.3em] text-white/50 uppercase">
+              04 — Import dari Drive
+            </p>
+            <button
+              onClick={loadDriveFiles}
+              className="border border-white/20 px-3 py-2 text-[11px] text-white/60 uppercase"
+            >
+              Cek Drive
+            </button>
+          </div>
+          <p className="mt-3 text-xs text-white/50">
+            Upload video besar lewat aplikasi Google Drive ke folder "Portofolio", lalu klik "Cek Drive" dan import di sini.
+          </p>
+          {driveFiles.length > 0 && (
+            <ul className="mt-4 divide-y divide-white/10 border-y border-white/10">
+              {driveFiles.map((f) => (
+                <li key={f.id} className="flex items-center gap-3 py-3">
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm text-white">{f.name}</p>
+                    <p className="text-xs text-white/40">
+                      {f.type === "video" ? "Video" : f.type === "photo" ? "Foto" : f.mimeType} · {fmtBytes(f.size)}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => importFromDrive(f)}
+                    disabled={importing === f.id}
+                    className="shrink-0 bg-white px-4 py-2 text-[11px] font-bold text-black uppercase disabled:opacity-30"
+                  >
+                    {importing === f.id ? "…" : "Import"}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
         {/* DAFTAR KARYA */}
         <section className="mt-10">
           <p className="text-[11px] tracking-[0.3em] text-white/50 uppercase">
-            04 — Daftar karya ({works.length})
+            05 — Daftar karya ({works.length})
           </p>
           {works.length === 0 ? (
             <p className="mt-4 border border-dashed border-white/20 p-8 text-center text-sm text-white/40">
