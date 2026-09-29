@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 
 // Playlist: CC0 + NCS (royalty-free, boleh dipakai)
 // 1-3: CC0 dari sapirca/timecues-studio | 4-7: NCS dari incrxyt/.mp3-files-for-terribledash
+// 8-17: NCS langsung dari ncs.io (NoCopyrightSounds, gratis dengan atribusi)
 const TRACKS = [
   {
     title: "Phonk Remix",
@@ -39,6 +40,56 @@ const TRACKS = [
     title: "a little break",
     artist: "youth®",
     src: "https://raw.githubusercontent.com/incrxyt/.mp3-files-for-terribledash/main/youth%C2%AE%20-%20a%20little%20break%20%5BNCS%20Release%5D.mp3",
+  },
+  {
+    title: "Kapoeira Phonk",
+    artist: "DYNAMIS, HXDES",
+    src: "https://ncsmusic.s3.eu-west-1.amazonaws.com/tracks/000/001/668/1715334625_3BjiNbkiiH_01-HXDES-DYNAMIS---Kapoeira-Phonk-NCS-Release.mp3",
+  },
+  {
+    title: "Bad Habit (Phonk Version)",
+    artist: "Zaug, Jéja",
+    src: "https://ncsmusic.s3.eu-west-1.amazonaws.com/tracks/000/001/383/bad-habit-feat-zaug-phonk-version-1681257652-UV8yjeWUX4.mp3",
+  },
+  {
+    title: "Heavyweight",
+    artist: "RedMoon, Meron Ryan",
+    src: "https://ncsmusic.s3.eu-west-1.amazonaws.com/tracks/000/000/124/heavyweight-1586946764-RJKIN7YYWm.mp3",
+  },
+  {
+    title: "Only Us",
+    artist: "RedMoon, Jonny Rose",
+    src: "https://ncsmusic.s3.eu-west-1.amazonaws.com/tracks/000/000/094/only-us-1586946519-aUACdAg61E.mp3",
+  },
+  {
+    title: "Don't Leave Me",
+    artist: "Electronic Vibes, M.I.M.E",
+    src: "https://ncsmusic.s3.eu-west-1.amazonaws.com/tracks/000/000/041/dont-leave-me-1586946018-l8MK6lNJGT.mp3",
+  },
+  {
+    title: "Lighthouse",
+    artist: "PhiloSofie, Azertion, JJD",
+    src: "https://ncsmusic.s3.eu-west-1.amazonaws.com/tracks/000/001/862/lighthouse-feat-philosofie-1741827658-EKeY0F5YVN.mp3",
+  },
+  {
+    title: "Haunted House",
+    artist: "Neoni",
+    src: "https://ncsmusic.s3.eu-west-1.amazonaws.com/tracks/000/001/100/haunted-house-1647097237-HAGlYrFRLn.mp3",
+  },
+  {
+    title: "House",
+    artist: "3rd Prototype, Emdi",
+    src: "https://ncsmusic.s3.eu-west-1.amazonaws.com/tracks/000/000/395/house-1586951930-l8KxCo28JJ.mp3",
+  },
+  {
+    title: "Drifting Away",
+    artist: "Housewell, Side-B, Karl VanBurkleo",
+    src: "https://ncsmusic.s3.eu-west-1.amazonaws.com/tracks/000/000/064/drifting-away-1586946258-WNa0COngyc.mp3",
+  },
+  {
+    title: "Morning Drift",
+    artist: "Rameses B",
+    src: "https://ncsmusic.s3.eu-west-1.amazonaws.com/tracks/000/001/593/morning-drift-1703552453-gnAI12OX2N.mp3",
   },
 ];
 
