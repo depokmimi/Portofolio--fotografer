@@ -157,16 +157,25 @@ export default function AdminClient() {
         const end = Math.min(offset + CHUNK, file.size);
         let res: Response | null = null;
         let lastErr = "";
-        // Retry 3x per chunk dengan jeda
+        // Retry 3x per chunk dengan jeda (via proxy server, hindari CORS browser->Google)
         for (let attempt = 1; attempt <= 3; attempt++) {
           try {
-            res = await fetch(sessionUri, {
-              method: "PUT",
-              headers: {
-                "Content-Range": `bytes ${offset}-${end - 1}/${file.size}`,
-              },
+            const proxyUrl = `/api/drive/upload/chunk?session=${encodeURIComponent(sessionUri)}&start=${offset}&end=${end}&total=${file.size}`;
+            res = await fetch(proxyUrl, {
+              method: "POST",
               body: file.slice(offset, end),
             });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || `Server menolak chunk (${res.status})`);
+            // Normalisasi ke bentuk seperti respons Google
+            if (data.status === 308) {
+              res = new Response(null, {
+                status: 308,
+                headers: data.range ? { range: data.range } : {},
+              });
+            } else {
+              res = new Response(JSON.stringify({ id: data.id }), { status: 200 });
+            }
             break; // sukses, keluar dari loop retry
           } catch (e) {
             lastErr = e instanceof Error ? e.message : "network error";
