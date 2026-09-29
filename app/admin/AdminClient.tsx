@@ -482,7 +482,10 @@ export default function AdminClient() {
             </button>
           </div>
           <p className="mt-3 text-xs text-white/50">
-            Upload video besar lewat aplikasi Google Drive ke folder "Portofolio", lalu klik "Cek Drive" dan import di sini.
+            Upload video besar lewat aplikasi Google Drive ke folder <span className="font-semibold text-white">"Portofolio"</span>, lalu klik "Cek Drive" dan import di sini.
+          </p>
+          <p className="mt-2 rounded border border-yellow-500/30 bg-yellow-500/10 p-3 text-xs text-yellow-200">
+            📁 Pastikan upload ke folder <span className="font-bold">"Portofolio"</span> di Google Drive (bukan folder lain). File di folder lain tidak akan muncul di sini.
           </p>
           {driveFiles.length > 0 && (
             <ul className="mt-4 divide-y divide-white/10 border-y border-white/10">
