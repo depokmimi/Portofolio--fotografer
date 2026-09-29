@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { requireOwner } from "@/lib/owner-guard";
-import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
 export const dynamic = "force-dynamic";
 
@@ -34,7 +33,7 @@ export async function POST(request: Request) {
   const type = mimeType.startsWith("video") ? "video" : "photo";
 
   try {
-    const sb = getSupabaseAdmin();
+    const sb = gate.supabase!;
     // Cek sudah ada atau belum
     const { data: existing } = await sb
       .from("works")
