@@ -212,7 +212,7 @@ export default function VideoClient() {
             aria-modal="true"
             aria-label={videos[active].title}
           >
-            <div className="w-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
+            <div className="max-h-[90vh] w-full max-w-6xl overflow-y-auto" onClick={(e) => e.stopPropagation()}>
               <div className="mb-3 flex items-center justify-between gap-4">
                 <p className="font-display text-lg tracking-wide text-white uppercase">
                   {videos[active].title}
@@ -220,19 +220,71 @@ export default function VideoClient() {
                 <button
                   onClick={close}
                   aria-label="Tutup"
-                  className="flex h-11 w-11 cursor-pointer items-center justify-center border border-white/30 text-2xl text-white transition-colors hover:bg-white hover:text-black"
+                  className="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center border border-white/30 text-2xl text-white transition-colors hover:bg-white hover:text-black"
                 >
                   ×
                 </button>
               </div>
-              <video
-                key={videos[active].id}
-                src={videos[active].src}
-                controls
-                autoPlay
-                playsInline
-                className="aspect-video w-full bg-black"
-              />
+              <div className="flex flex-col gap-4 lg:flex-row">
+                {/* Video utama */}
+                <div className="flex-1">
+                  <video
+                    key={videos[active].id}
+                    src={videos[active].src}
+                    controls
+                    autoPlay
+                    playsInline
+                    className="aspect-video w-full bg-black"
+                  />
+                  <div className="mt-3 flex items-baseline justify-between gap-3">
+                    <p className="font-display text-xl tracking-wide text-white uppercase">
+                      {videos[active].title}
+                    </p>
+                    <span className="shrink-0 text-[11px] tracking-[0.18em] text-white/50 uppercase">
+                      {videos[active].category}
+                    </span>
+                  </div>
+                </div>
+                {/* Menu daftar video di samping */}
+                <aside className="w-full shrink-0 lg:w-80">
+                  <p className="mb-2 text-[11px] tracking-[0.25em] text-white/50 uppercase">
+                    Video Lainnya ({videos.length - 1})
+                  </p>
+                  <div className="flex max-h-64 flex-col gap-2 overflow-y-auto lg:max-h-[60vh]">
+                    {videos.map((v, i) =>
+                      i === active ? null : (
+                        <button
+                          key={v.id}
+                          onClick={() => setActive(i)}
+                          className="group flex cursor-pointer items-center gap-3 border border-white/10 p-2 text-left transition-colors hover:border-white/30 hover:bg-white/5"
+                        >
+                          <span className="relative block aspect-video w-28 shrink-0 overflow-hidden">
+                            <img
+                              src={v.poster}
+                              alt={v.title}
+                              className="h-full w-full object-cover"
+                              loading="lazy"
+                            />
+                            <span className="absolute inset-0 flex items-center justify-center bg-black/30">
+                              <svg viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6 text-white" aria-hidden="true">
+                                <path d="M8 5v14l11-7z" />
+                              </svg>
+                            </span>
+                          </span>
+                          <span className="min-w-0 flex-1">
+                            <span className="block truncate text-sm font-semibold text-white">
+                              {v.title}
+                            </span>
+                            <span className="block text-[11px] tracking-[0.14em] text-white/40 uppercase">
+                              {v.category} • {v.duration}
+                            </span>
+                          </span>
+                        </button>
+                      )
+                    )}
+                  </div>
+                </aside>
+              </div>
             </div>
           </div>
         )}
