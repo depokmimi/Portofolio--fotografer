@@ -24,7 +24,9 @@ interface DriveStatus {
   warning?: string;
 }
 
-const CHUNK = Math.floor(3.5 * 1024 * 1024);
+const CHUNK = 1 * 1024 * 1024; // 1MB: tiap percobaan cepat selesai, kecil risiko timeout
+// Batas satu percobaan chunk; kalau macet, batalkan dan retry (sesi resumable aman diulang)
+const ATTEMPT_TIMEOUT_MS = 50_000;
 
 function fmtBytes(n: number): string {
   if (!n) return "0 B";
@@ -227,14 +229,18 @@ export default function AdminClient() {
         const end = Math.min(offset + CHUNK, file.size);
         let res: Response | null = null;
         let lastErr = "";
-        // Retry 5x per chunk dengan jeda exponential
+        // Retry 5x per chunk dengan jeda exponential; tiap percobaan dibatasi
+        // timeout agar percobaan yang macet cepat gagal dan dicoba ulang.
         for (let attempt = 1; attempt <= 5; attempt++) {
+          const ac = new AbortController();
+          const timer = setTimeout(() => ac.abort(), ATTEMPT_TIMEOUT_MS);
           try {
             const proxyUrl = `/api/drive/upload/chunk?start=${offset}&end=${end}&total=${file.size}`;
             res = await fetch(proxyUrl, {
               method: "POST",
               headers: { "X-Session-Uri": sessionUri },
               body: file.slice(offset, end),
+              signal: ac.signal,
             });
             const data = await res.json();
             if (!res.ok) {
@@ -252,11 +258,18 @@ export default function AdminClient() {
             }
             break; // sukses, keluar dari loop retry
           } catch (e) {
-            lastErr = e instanceof Error ? e.message : "network error";
+            lastErr =
+              e instanceof Error
+                ? e.name === "AbortError"
+                  ? "timeout 50 dtk (koneksi macet)"
+                  : e.message
+                : "network error";
             if (attempt < 5) {
               setMsg(`Mengunggah… ${chunkIdx}/${totalChunks} (percobaan ${attempt + 1}/5)`);
               await new Promise((r) => setTimeout(r, 3000 * attempt));
             }
+          } finally {
+            clearTimeout(timer);
           }
         }
         if (!res) {
