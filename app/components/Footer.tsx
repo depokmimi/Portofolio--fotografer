@@ -6,6 +6,10 @@ export default function Footer() {
       <p className="font-script text-center text-[13vw] leading-none md:text-[6vw]">
         Muhamad Ramdhani
       </p>
+      <div className="mt-8 flex items-center justify-center gap-2 text-[11px] tracking-[0.24em] text-muted">
+        <img src="https://mrr.ai.id/logo-utama-icon.png" alt="Muramsyah Group Indonesia" className="h-5 w-5 rounded" />
+        A Member of Muramsyah Group Indonesia
+      </div>
       <div className="mt-10 flex flex-col items-center justify-between gap-4 text-[11px] uppercase tracking-[0.24em] text-muted sm:flex-row">
         <span>© 2026 muramsyah</span>
         <div className="flex gap-6">
