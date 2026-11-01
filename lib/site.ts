@@ -6,7 +6,7 @@ export const PHOTOGRAPHER_SHORT = "Muhamad Ramdhani";
 
 export const PHONE_DISPLAY = "085811053787";
 export const PHONE_INTL = "6285811053787";
-export const EMAIL = "me@muramsyah.biz.id";
+export const EMAIL = "me@mrr.ai.id";
 export const INSTAGRAM_HANDLE = "@muramsyah";
 export const INSTAGRAM_LINK = "https://instagram.com/muramsyah";
 export const RESPONSE_HOURS = "Fast respon 08.00–21.00 WIB";
