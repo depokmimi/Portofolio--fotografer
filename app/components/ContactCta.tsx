@@ -18,8 +18,8 @@ const contacts = [
   {
     no: "03",
     label: "Email",
-    value: "me@muramsyah.biz.id",
-    href: "mailto:me@muramsyah.biz.id",
+    value: "me@mrr.ai.id",
+    href: "mailto:me@mrr.ai.id",
   },
 ];
 
